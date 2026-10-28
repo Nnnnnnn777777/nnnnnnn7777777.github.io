@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>卢果 · Lu Guo</title>
+<style>
+  :root{
+    --bg:#f6f5fb;
+    --card:#ffffff;
+    --border:#ebe9f3;
+    --border-strong:#d9d4ec;
+    --text:#1a1a2e;
+    --text-dim:#6b6b80;
+    --text-mid:#8a8aa0;
+    --purple:#7c3aed;
+    --purple-soft:#a78bfa;
+    --purple-bg:#f3f0ff;
+    --purple-border:#ddd6fe;
+    --shadow:0 1px 2px rgba(16,16,32,.04),0 4px 16px rgba(16,16,32,.04);
+    --shadow-lg:0 2px 8px rgba(16,16,32,.06),0 12px 32px rgba(16,16,32,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .container{max-width:1120px;margin:0 auto;padding:32px 20px 48px}
+
+  /* ---------- Grid ---------- */
+  .grid{display:grid;grid-template-columns:1fr;gap:24px;align-items:start}
+
+  /* ---------- Card ---------- */
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:22px;
+  }
+  .card + .card{margin-top:18px}
+  .card h2{
+    font-size:15px;font-weight:700;letter-spacing:.3px;
+    margin-bottom:14px;display:flex;align-items:center;gap:8px;
+  }
+  .card h2 .dot{
+    width:6px;height:6px;border-radius:50%;background:var(--purple);
+    box-shadow:0 0 0 3px var(--purple-bg);
+  }
+
+  /* ---------- Profile ---------- */
+  .profile{display:flex;gap:18px;align-items:flex-start}
+  .avatar-wrap{position:relative;flex-shrink:0}
+  .avatar{
+    width:84px;height:84px;border-radius:50%;
+    object-fit:cover;
+    border:2px solid #fff;
+    box-shadow:0 2px 12px rgba(124,58,237,.18);
+    background:#eee;
+  }
+  .avatar-wrap .badge{
+    position:absolute;bottom:-2px;right:-2px;
+    background:var(--purple);color:#fff;
+    font-size:10px;font-weight:600;
+    padding:2px 8px;border-radius:999px;
+    border:2px solid #fff;white-space:nowrap;
+  }
+  .profile .info{flex:1;min-width:0}
+  .profile h1{font-size:24px;font-weight:800;letter-spacing:.5px}
+  .profile .title{
+    font-size:13.5px;color:var(--purple);font-weight:600;margin-top:2px;
+  }
+  .profile .bio{font-size:13px;color:var(--text-dim);margin-top:8px;line-height:1.7}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .tag{
+    font-size:12px;padding:4px 12px;border-radius:999px;
+    background:var(--purple-bg);color:var(--purple);
+    border:1px solid var(--purple-border);font-weight:500;
+  }
+
+  /* ---------- Lists ---------- */
+  .list{list-style:none;display:flex;flex-direction:column;gap:12px}
+  .list li{
+    font-size:13.5px;color:var(--text);
+    padding-left:18px;position:relative;line-height:1.65;
+  }
+  .list li::before{
+    content:"";position:absolute;left:0;top:9px;
+    width:6px;height:6px;border-radius:50%;
+    background:var(--purple-soft);
+  }
+  .list li strong{color:var(--text);font-weight:600}
+
+  /* ---------- Projects ---------- */
+  .projects{display:flex;flex-direction:column;gap:12px}
+  .project{
+    border:1px solid var(--border);border-radius:10px;padding:14px;
+    transition:border-color .2s,transform .2s,box-shadow .2s;
+  }
+  .project:hover{
+    border-color:var(--purple-border);
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-lg);
+  }
+  .project .head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+  .project h3{font-size:14px;font-weight:700}
+  .status{
+    font-size:10px;font-weight:700;letter-spacing:.5px;
+    padding:2px 8px;border-radius:999px;white-space:nowrap;
+  }
+  .status.doing{background:#eef2ff;color:#4f46e5}
+  .status.explore{background:#f0fdf4;color:#16a34a}
+  .status.research{background:#fff7ed;color:#ea580c}
+  .status.building{background:#fef3c7;color:#d97706}
+  .project p{font-size:12.5px;color:var(--text-dim);line-height:1.65}
+  .project .tech{margin-top:6px;font-size:11.5px;color:var(--text-mid)}
+  .project .tech b{color:var(--purple);font-weight:600}
+
+  /* ---------- Highlights ---------- */
+  .highlights{display:flex;flex-direction:column;gap:10px}
+  .hl{
+    display:flex;gap:12px;padding:12px;border-radius:10px;
+    background:var(--purple-bg);border:1px solid var(--purple-border);
+  }
+  .hl .icon{
+    width:32px;height:32px;border-radius:8px;flex-shrink:0;
+    background:#fff;display:flex;align-items:center;justify-content:center;
+    font-size:15px;font-weight:800;color:var(--purple);
+  }
+  .hl h4{font-size:13px;font-weight:700;margin-bottom:2px}
+  .hl p{font-size:12.5px;color:var(--text-dim);line-height:1.6}
+
+  /* ---------- Floating Chat ---------- */
+  .chat-fab{
+    position:fixed;bottom:28px;right:28px;z-index:100;
+    width:60px;height:60px;border-radius:50%;border:none;cursor:pointer;
+    background:linear-gradient(135deg,var(--purple),#6d28d9);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 20px rgba(124,58,237,.35),0 2px 8px rgba(0,0,0,.1);
+    transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s,opacity .3s;
+  }
+  .chat-fab:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(124,58,237,.45)}
+  .chat-fab .fab-pulse{
+    position:absolute;inset:0;border-radius:50%;
+    border:2px solid var(--purple-soft);
+    animation:fabPulse 2.5s ease-out infinite;pointer-events:none;
+  }
+  @keyframes fabPulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.6);opacity:0}}
+  .chat-fab svg{width:26px;height:26px;position:relative;z-index:1}
+  .chat-fab .fab-badge{
+    position:absolute;top:-4px;right:-4px;
+    background:#22c55e;color:#fff;font-size:10px;font-weight:700;
+    width:18px;height:18px;border-radius:50%;border:2px solid #fff;
+    display:flex;align-items:center;justify-content:center;z-index:2;
+  }
+  .chat-fab.hidden{transform:scale(0);opacity:0;pointer-events:none}
+
+  .chat-float{
+    position:fixed;bottom:28px;right:28px;z-index:101;
+    width:400px;max-width:calc(100vw - 32px);height:600px;max-height:calc(100vh - 56px);
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(24px) saturate(1.5);
+    -webkit-backdrop-filter:blur(24px) saturate(1.5);
+    border:1px solid rgba(168,85,247,.12);
+    border-radius:20px;
+    box-shadow:0 8px 40px rgba(124,58,237,.12),0 2px 8px rgba(0,0,0,.06),inset 0 1px 0 rgba(255,255,255,.5);
+    overflow:hidden;
+    display:flex;flex-direction:column;
+    transform:scale(.85) translateY(20px);opacity:0;pointer-events:none;
+    transform-origin:bottom right;
+    transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .25s;
+  }
+  .chat-float.open{transform:scale(1) translateY(0);opacity:1;pointer-events:auto}
+  /* Top accent bar */
+  .chat-float::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--purple-soft),var(--purple),#6d28d9,var(--purple-soft));
+    background-size:200% 100%;animation:shimmer 4s linear infinite;z-index:1;
+  }
+  @keyframes shimmer{to{background-position:200% 0}}
+  .chat-head{
+    padding:16px 18px 14px;
+    display:flex;align-items:center;gap:12px;
+    background:linear-gradient(135deg,rgba(243,240,255,.6),rgba(255,255,255,.2));
+    border-bottom:1px solid rgba(168,85,247,.07);
+    position:relative;
+  }
+  .chat-head .avatar-wrap{position:relative;flex-shrink:0}
+  .chat-head .avatar{
+    width:44px;height:44px;border-radius:50%;
+    border:2.5px solid var(--purple-soft);
+    box-shadow:0 0 0 4px rgba(168,85,247,.08),0 2px 8px rgba(124,58,237,.12);
+  }
+  .chat-head .avatar-ring{
+    position:absolute;inset:-5px;border-radius:50%;
+    border:1.5px solid transparent;
+    border-top-color:var(--purple-soft);
+    border-right-color:var(--purple-soft);
+    animation:spin 3s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .chat-head .meta{flex:1;min-width:0}
+  .chat-head .name{
+    font-size:14px;font-weight:700;
+    display:flex;align-items:center;gap:6px;
+  }
+  .chat-head .ai-badge{
+    font-size:9px;font-weight:700;letter-spacing:.8px;
+    background:linear-gradient(135deg,var(--purple),#6d28d9);
+    color:#fff;padding:1.5px 7px;border-radius:4px;
+    margin-left:2px;
+  }
+  .chat-head .name .online{
+    width:8px;height:8px;border-radius:50%;background:#22c55e;
+    box-shadow:0 0 0 3px rgba(34,197,94,.15);
+    animation:onlinePulse 2s ease-in-out infinite;
+  }
+  @keyframes onlinePulse{50%{box-shadow:0 0 0 6px rgba(34,197,94,.05)}}
+  .chat-head .sub{font-size:11.5px;color:var(--text-dim)}
+  .chat-head .status-tag{
+    font-size:10px;font-weight:600;color:var(--purple);
+    background:var(--purple-bg);border:1px solid var(--purple-border);
+    padding:3px 9px;border-radius:6px;white-space:nowrap;flex-shrink:0;
+  }
+  .chat-close{
+    width:30px;height:30px;flex-shrink:0;
+    background:transparent;border:none;cursor:pointer;
+    color:var(--text-mid);border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .15s;
+  }
+  .chat-close:hover{background:rgba(0,0,0,.05);color:var(--text)}
+  .chat-close svg{width:18px;height:18px}
+
+  /* Custom scrollbar */
+  .chat-body::-webkit-scrollbar{width:5px}
+  .chat-body::-webkit-scrollbar-track{background:transparent}
+  .chat-body::-webkit-scrollbar-thumb{background:rgba(124,58,237,.15);border-radius:999px}
+  .chat-body::-webkit-scrollbar-thumb:hover{background:rgba(124,58,237,.3)}
+
+  .chat-body{
+    flex:1;overflow-y:auto;padding:18px 18px 14px;
+    display:flex;flex-direction:column;gap:16px;
+    background:
+      radial-gradient(300px 140px at 85% 0%,rgba(168,85,247,.035),transparent),
+      radial-gradient(240px 120px at 10% 100%,rgba(124,58,237,.02),transparent),
+      #fafaff;
+  }
+  /* Date separator */
+  .date-sep{
+    display:flex;align-items:center;gap:10px;
+    margin:2px 0;
+  }
+  .date-sep::before,.date-sep::after{
+    content:"";flex:1;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(168,85,247,.12),transparent);
+  }
+  .date-sep span{
+    font-size:10px;font-weight:600;color:var(--text-mid);
+    letter-spacing:.5px;white-space:nowrap;
+  }
+
+  /* Message rows with avatar */
+  .msg-row{display:flex;gap:8px;align-items:flex-end;max-width:88%}
+  .msg-row.me{flex-direction:row-reverse;margin-left:auto}
+  .msg-row .msg-avatar{
+    width:30px;height:30px;border-radius:50%;flex-shrink:0;
+    object-fit:cover;border:1.5px solid #fff;
+    box-shadow:0 1px 4px rgba(0,0,0,.08);
+  }
+  .msg-row .bubble-col{display:flex;flex-direction:column;gap:3px;min-width:0}
+  .msg-row .ts{
+    font-size:9.5px;color:var(--text-mid);
+    padding:0 4px;letter-spacing:.2px;
+  }
+  .msg-row.me .ts{text-align:right}
+  .msg{
+    padding:10px 14px;border-radius:16px;font-size:13.5px;line-height:1.65;
+    word-break:break-word;white-space:pre-wrap;
+    animation:msgIn .35s cubic-bezier(.22,1,.36,1);
+  }
+  @keyframes msgIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+  .msg.bot{
+    background:linear-gradient(180deg,#fff,rgba(250,248,255,.6));
+    border:1px solid var(--border);
+    border-bottom-left-radius:5px;
+    box-shadow:0 1px 4px rgba(0,0,0,.03),0 0 0 .5px rgba(168,85,247,.04);
+  }
+  .msg.me{
+    background:linear-gradient(135deg,var(--purple) 0%,#6d28d9 100%);
+    color:#fff;border-bottom-right-radius:5px;
+    box-shadow:0 2px 10px rgba(124,58,237,.22);
+  }
+  .msg.error{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+
+  .typing{
+    display:inline-flex;gap:5px;align-self:flex-start;
+    padding:13px 18px;
+    background:linear-gradient(180deg,#fff,rgba(250,248,255,.6));
+    border:1px solid var(--border);
+    border-radius:16px;border-bottom-left-radius:5px;
+    box-shadow:0 1px 4px rgba(0,0,0,.03);
+  }
+  .typing span{
+    width:7px;height:7px;border-radius:50%;background:var(--purple-soft);
+    animation:wave 1.3s ease-in-out infinite;
+  }
+  .typing span:nth-child(2){animation-delay:.15s}
+  .typing span:nth-child(3){animation-delay:.3s}
+  @keyframes wave{0%,60%,100%{transform:translateY(0);opacity:.3}30%{transform:translateY(-7px);opacity:1}}
+
+  .quick{
+    padding:10px 14px;display:flex;flex-wrap:wrap;gap:7px;
+    border-top:1px solid rgba(168,85,247,.07);
+    background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(243,240,255,.25));
+  }
+  .quick-label{
+    font-size:10px;font-weight:600;color:var(--text-mid);
+    letter-spacing:.5px;width:100%;margin-bottom:2px;
+  }
+  .quick button{
+    display:inline-flex;align-items:center;gap:5px;
+    background:rgba(255,255,255,.75);border:1px solid var(--purple-border);
+    color:var(--purple);border-radius:999px;padding:6px 14px;font-size:12px;
+    cursor:pointer;transition:all .2s ease;font-weight:500;
+    backdrop-filter:blur(4px);
+  }
+  .quick button svg{width:13px;height:13px;flex-shrink:0;opacity:.6}
+  .quick button:hover{
+    background:var(--purple);color:#fff;border-color:var(--purple);
+    box-shadow:0 2px 10px rgba(124,58,237,.25);transform:translateY(-1px);
+  }
+  .quick button:hover svg{opacity:1}
+  .quick button:active{transform:translateY(0)}
+
+  .chat-input{
+    display:flex;align-items:center;gap:8px;padding:12px 14px;
+    border-top:1px solid rgba(168,85,247,.07);
+    background:rgba(255,255,255,.65);backdrop-filter:blur(8px);
+  }
+  .input-wrap{
+    flex:1;position:relative;display:flex;align-items:center;
+    background:var(--bg);border:1px solid var(--border);
+    border-radius:24px;transition:all .2s;
+  }
+  .input-wrap:focus-within{
+    border-color:var(--purple-soft);
+    box-shadow:0 0 0 3px rgba(168,85,247,.1),0 2px 8px rgba(168,85,247,.06);
+  }
+  .input-prefix{
+    padding-left:14px;padding-right:0;color:var(--text-mid);flex-shrink:0;
+    display:flex;align-items:center;
+  }
+  .input-wrap input{
+    flex:1;background:transparent;border:none;
+    border-radius:24px;padding:10px 8px 10px 6px;color:var(--text);font-size:13.5px;outline:none;
+  }
+  .counter{font-size:10px;color:var(--text-mid);padding-right:12px;white-space:nowrap}
+  .send-btn{
+    width:42px;height:42px;flex-shrink:0;
+    background:linear-gradient(135deg,var(--purple),#6d28d9);
+    color:#fff;border:none;border-radius:50%;
+    cursor:pointer;font-size:16px;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .2s;box-shadow:0 2px 8px rgba(124,58,237,.25);
+  }
+  .send-btn:hover:not(:disabled){
+    box-shadow:0 4px 16px rgba(124,58,237,.35);transform:scale(1.05);
+  }
+  .send-btn:active:not(:disabled){transform:scale(.95)}
+  .send-btn:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}
+
+  /* ---------- Footer ---------- */
+  footer{
+    margin-top:28px;padding-top:18px;border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;color:var(--text-mid);flex-wrap:wrap;gap:8px;
+  }
+  footer a{color:var(--text-dim);text-decoration:none}
+  footer a:hover{color:var(--purple)}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:520px){
+    .container{padding:20px 14px 40px}
+    .profile{flex-direction:column;align-items:flex-start}
+    .profile h1{font-size:21px}
+    .chat-float{width:calc(100vw - 24px);height:calc(100vh - 80px);bottom:16px;right:12px;border-radius:16px}
+    .chat-fab{bottom:16px;right:16px;width:54px;height:54px}
+    .chat-fab svg{width:24px;height:24px}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="grid">
+
+    <!-- ============ Left column ============ -->
+    <div class="col-left">
+
+      <section class="card profile">
+        <div class="avatar-wrap">
+          <img class="avatar" src="https://miaoda-conversation-file.cdn.bcebos.com/user-emon2epfxs74/app-emoof2vdn4ld/20260924/微信图片_20250925220737_340_11.jpg" alt="卢果" />
+          <span class="badge">STUDENT</span>
+        </div>
+        <div class="info">
+          <h1>卢果</h1>
+          <div class="title">大学生 / AI 产品与技术探索者</div>
+          <p class="bio">对技术保持扎实的好奇心，热衷于把 AI 能力落到真实场景里。目前在 AI 应用、具身智能与计算机基础之间来回横跳，边学边做，偶尔翻车，总体向上。</p>
+          <div class="tags">
+            <span class="tag">AI 应用</span>
+            <span class="tag">具身智能</span>
+            <span class="tag">计算机</span>
+            <span class="tag">产品落地</span>
+            <span class="tag">智能体</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="dot"></span>当前专注方向</h2>
+        <ul class="list">
+          <li><strong>具身智能与智能体系统交互探索</strong> — 关注 Agent 如何感知环境并做出决策，尝试理解从仿真到真机的控制链路。</li>
+          <li><strong>大语言模型与垂直应用场景的工程化落地</strong> — 不满足于调 API 玩 Demo，在学习如何把 LLM 稳定地嵌入真实业务流程。</li>
+          <li><strong>计算机核心基础与系统级开发实践</strong> — 啃操作系统、网络与数据结构，相信底层理解决定上层能走多远。</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2><span class="dot"></span>进行中项目</h2>
+        <div class="projects">
+          <div class="project">
+            <div class="head">
+              <h3>个人 AI 数字分身交互系统</h3>
+              <span class="status doing">DOING</span>
+            </div>
+            <p>基于人设 Prompt 与大模型的个人数字分身，支持多轮对话、访客自由提问与快捷问题，SSE 真实流式回复。</p>
+            <div class="tech">技术要点：<b>大模型 API</b> · <b>SSE 流式</b> · <b>人设 Prompt 与边界控制</b></div>
+          </div>
+          <div class="project">
+            <div class="head">
+              <h3>具身智能控制原型探索</h3>
+              <span class="status research">RESEARCH</span>
+            </div>
+            <p>在仿真环境中复现基础的机器人控制流程，理解感知—决策—执行的闭环，为后续真机实验铺路。</p>
+            <div class="tech">技术要点：<b>强化学习入门</b> · <b>仿真环境搭建</b> · <b>控制策略理解</b></div>
+          </div>
+          <div class="project">
+            <div class="head">
+              <h3>多模态工作流辅助工具</h3>
+              <span class="status building">BUILDING</span>
+            </div>
+            <p>串联文本、图像等多模态能力的轻量工作流工具，目标是把重复劳动交给 AI，把判断留给人。</p>
+            <div class="tech">技术要点：<b>多模态 API 编排</b> · <b>工作流引擎</b> · <b>前端交互</b></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2><span class="dot"></span>精选亮点与经历</h2>
+        <div class="highlights">
+          <div class="hl">
+            <div class="icon">OS</div>
+            <div>
+              <h4>开源项目探索</h4>
+              <p>持续阅读 AI 与具身智能方向的开源项目源码，在复刻与改动手感中理解工程实现。</p>
+            </div>
+          </div>
+          <div class="hl">
+            <div class="icon">AI</div>
+            <div>
+              <h4>多项 AI 产品 Demo 验证</h4>
+              <p>围绕 LLM 应用与多模态场景快速搭建原型，验证想法可行性，积累从 0 到 1 的产品手感。</p>
+            </div>
+          </div>
+          <div class="hl">
+            <div class="icon">✎</div>
+            <div>
+              <h4>持续技术复盘与写作</h4>
+              <p>把踩过的坑、学到的概念写成复盘笔记，用输出倒逼输入，也方便日后回头打脸。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+
+  <footer>
+    <span>© 2026 卢果 · 大学生 / AI 产品与技术探索者</span>
+    <a href="mailto:1599989594@qq.com">📧 1599989594@qq.com</a>
+  </footer>
+</div>
+
+<!-- Floating Chat Widget -->
+<button class="chat-fab" id="chatFab" aria-label="打开对话">
+  <span class="fab-pulse"></span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  <span class="fab-badge">1</span>
+</button>
+
+<div class="chat-float" id="chatFloat">
+  <div class="chat-head">
+    <div class="avatar-wrap">
+      <img class="avatar" src="https://miaoda-conversation-file.cdn.bcebos.com/user-emon2epfxs74/app-emoof2vdn4ld/20260924/微信图片_20250925220737_340_11.jpg" alt="数字分身" />
+      <span class="avatar-ring"></span>
+    </div>
+    <div class="meta">
+      <div class="name">卢果的数字分身<span class="ai-badge">AI</span><span class="online"></span></div>
+      <div class="sub">在线 · 本尊在爆肝，我来社交</div>
+    </div>
+    <span class="status-tag">在线</span>
+    <button class="chat-close" id="chatClose" aria-label="关闭">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="chat-body" id="chatBody">
+    <div class="date-sep"><span>今天</span></div>
+    <div class="msg-row bot">
+      <img class="msg-avatar" src="https://miaoda-conversation-file.cdn.bcebos.com/user-emon2epfxs74/app-emoof2vdn4ld/20260924/微信图片_20250925220737_340_11.jpg" alt="" />
+      <div class="bubble-col">
+        <div class="msg bot">你好呀，我是卢果的数字分身 👋 本尊是个超级大 i 人，正在自习室/实验室爆肝升级中，所以派我来接待你。想了解他的项目、方向或联系方式，尽管问～</div>
+        <span class="ts">刚刚</span>
+      </div>
+    </div>
+  </div>
+  <div class="quick">
+    <div class="quick-label">快捷问题</div>
+    <button data-q="怎么联系你？">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+      怎么联系你？
+    </button>
+    <button data-q="你最近在做什么有趣的项目？">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l2.5 5 5.5.8-4 3.9 1 5.5L12 14.5 7 17.2l1-5.5-4-3.9 5.5-.8z"/></svg>
+      最近在做什么有趣的项目？
+    </button>
+    <button data-q="聊聊你对具身智能和AI的想法？">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+      聊聊具身智能和 AI？
+    </button>
+  </div>
+  <div class="chat-input">
+    <div class="input-wrap">
+      <span class="input-prefix">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </span>
+      <input id="chatInput" placeholder="输入你想问的问题..." maxlength="200" />
+      <span class="counter" id="counter">0/200</span>
+    </div>
+    <button class="send-btn" id="sendBtn" disabled aria-label="发送">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  const AVATAR_URL = 'https://miaoda-conversation-file.cdn.bcebos.com/user-emon2epfxs74/app-emoof2vdn4ld/20260924/微信图片_20250925220737_340_11.jpg';
+  const body = document.getElementById('chatBody');
+  const input = document.getElementById('chatInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const counter = document.getElementById('counter');
+  const MAX_LEN = 200;
+  let isReplying = false;
+
+  function getTimeStr(){
+    const d = new Date();
+    return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+  }
+
+  function addMsg(text, who){
+    const row = document.createElement('div');
+    row.className = 'msg-row ' + who;
+    const ts = getTimeStr();
+    if(who === 'bot'){
+      row.innerHTML = '<img class="msg-avatar" src="'+AVATAR_URL+'" alt="" /><div class="bubble-col"><div class="msg bot"></div><span class="ts">'+ts+'</span></div>';
+    } else if(who === 'me'){
+      row.innerHTML = '<div class="bubble-col"><div class="msg me"></div><span class="ts">'+ts+'</span></div>';
+    } else {
+      row.className = 'msg-row bot';
+      row.innerHTML = '<img class="msg-avatar" src="'+AVATAR_URL+'" alt="" /><div class="bubble-col"><div class="msg '+who+'"></div><span class="ts">'+ts+'</span></div>';
+    }
+    const msgEl = row.querySelector('.msg');
+    msgEl.textContent = text;
+    body.appendChild(row);
+    body.scrollTop = body.scrollHeight;
+    return msgEl;
+  }
+  function addTyping(){
+    const row = document.createElement('div');
+    row.className = 'msg-row bot';
+    row.innerHTML = '<img class="msg-avatar" src="'+AVATAR_URL+'" alt="" /><div class="bubble-col"><div class="typing"><span></span><span></span><span></span></div></div>';
+    body.appendChild(row);
+    body.scrollTop = body.scrollHeight;
+    return row;
+  }
+
+  // 多轮对话上下文（发给后端，由大模型生成回复）
+  const history = [];
+
+  async function handleSend(text){
+    if(isReplying) return;
+    let t = (text || '').trim();
+    if(!t) return;
+    if(t.length > MAX_LEN) t = t.slice(0, MAX_LEN);
+
+    addMsg(t, 'me');
+    history.push({role:'user', content:t});
+    input.value = '';
+    updateCounter();
+    isReplying = true;
+    sendBtn.disabled = true;
+
+    const typingRow = addTyping();
+    try{
+      const resp = await fetch('/api/chat', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({messages: history.slice(-20)})
+      });
+      if(!resp.ok || !resp.body) throw new Error('HTTP ' + resp.status);
+
+      typingRow.remove();
+      const botEl = addMsg('', 'bot');
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = '', fullText = '';
+      while(true){
+        const {done, value} = await reader.read();
+        if(done) break;
+        buf += decoder.decode(value, {stream:true});
+        const parts = buf.split('\n\n');
+        buf = parts.pop();
+        for(const part of parts){
+          const line = part.trim();
+          if(!line.startsWith('data:')) continue;
+          const data = line.slice(5).trim();
+          if(data === '[DONE]') continue;
+          try{
+            const json = JSON.parse(data);
+            if(json.text){
+              fullText += json.text;
+              botEl.textContent = fullText;
+              body.scrollTop = body.scrollHeight;
+            }
+          }catch(e){}
+        }
+      }
+      if(fullText){
+        history.push({role:'assistant', content:fullText});
+      }else{
+        addMsg('分身暂时没想出怎么回，换个问法试试？', 'bot error');
+      }
+    }catch(e){
+      typingRow.remove();
+      history.pop(); // 移除失败的用户消息，重试时重新入栈
+      const errEl = addMsg('哎呀，脑子卡了一下，要不重试一次？（请确认后端已启动、API Key 已配置）', 'bot error');
+      const retry = document.createElement('button');
+      retry.textContent = '重新发送';
+      retry.style.cssText = 'margin-top:8px;padding:6px 14px;border-radius:8px;border:1px solid #7c3aed;background:#7c3aed;color:#fff;font-size:12px;cursor:pointer';
+      retry.onclick = ()=>{ errEl.closest('.msg-row').remove(); handleSend(t); };
+      errEl.appendChild(document.createElement('br'));
+      errEl.appendChild(retry);
+    }finally{
+      isReplying = false;
+      sendBtn.disabled = input.value.trim().length === 0;
+    }
+  }
+
+  function updateCounter(){
+    const len = input.value.length;
+    counter.textContent = len + '/' + MAX_LEN;
+    sendBtn.disabled = len === 0 || isReplying;
+  }
+
+  sendBtn.addEventListener('click', ()=>handleSend(input.value));
+  input.addEventListener('input', updateCounter);
+  input.addEventListener('keydown', e=>{
+    if(e.key === 'Enter' && !e.shiftKey){
+      e.preventDefault();
+      handleSend(input.value);
+    }
+  });
+  document.querySelectorAll('.quick button').forEach(b=>{
+    b.addEventListener('click', ()=>handleSend(b.dataset.q));
+  });
+
+  // Floating chat toggle
+  const chatFab = document.getElementById('chatFab');
+  const chatFloat = document.getElementById('chatFloat');
+  const chatClose = document.getElementById('chatClose');
+  const fabBadge = chatFab.querySelector('.fab-badge');
+
+  chatFab.addEventListener('click', ()=>{
+    chatFab.classList.add('hidden');
+    chatFloat.classList.add('open');
+    fabBadge.style.display = 'none';
+    setTimeout(()=>input.focus(),350);
+  });
+  chatClose.addEventListener('click', ()=>{
+    chatFloat.classList.remove('open');
+    setTimeout(()=>chatFab.classList.remove('hidden'),200);
+  });
+
+  updateCounter();
+</script>
+</body>
+</html>
